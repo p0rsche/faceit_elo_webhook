@@ -1,7 +1,7 @@
 import type { Context, Config } from "@netlify/functions";
 
 export default async (req: Request, context: Context) => {
-  const secretHeaderName = Netlify.env.get("SECRET_HEADER");
+  const secretHeaderName = process.env.SECRET_HEADER;
   if(!secretHeaderName) {
     return new Response("Please provide secret header in env variables.", { status: 500 })
   }
@@ -11,13 +11,17 @@ export default async (req: Request, context: Context) => {
     return new Response("Please provide request key in headers.", { status: 401 })
   }
 
-  const apiKey = Netlify.env.get(secretHeaderName);
+  const apiKey = process.env[secretHeaderName];
   if(requestKey !== apiKey) {
     return new Response("Sorry, no access for you.", { status: 401 })
   }
 
-  return new Response("Got request from faceit: " + req)
+  console.log(req.body)
+
+  return new Response("Got request from faceit: " + req.body)
 }
+
+
 
 export const config: Config = {
   path: "/faceit"
