@@ -1,4 +1,4 @@
-import type { Context } from "@netlify/functions";
+import type { Context, Config } from "@netlify/functions";
 
 export default async (req: Request, context: Context) => {
   const secretHeaderName = Netlify.env.get("SECRET_HEADER");
@@ -17,4 +17,8 @@ export default async (req: Request, context: Context) => {
   }
 
   return new Response("Got request from faceit: " + req)
+}
+
+export const config: Config = {
+  path: "/faceit"
 }
